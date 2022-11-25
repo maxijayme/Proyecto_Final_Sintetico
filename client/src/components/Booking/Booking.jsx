@@ -12,11 +12,17 @@ import { postBooking, getFields, getBookings, getFieldDetail } from '../../redux
 import Cookies from 'universal-cookie';
 import{URL_APP} from '../../utils/utils.js'
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+const d = new Date();
+let actualHour = d.getHours();
 
 function BookingAdmin() {
   const { id } = useParams();
-  const fields = useSelector((state) => state.fields);
+  // const fields = useSelector((state) => state.fields);
   const bookings = useSelector((state) => state.bookings);
+
+  // bookings.filter((booking)=>{
+  //   if(booking)
+  // })
   const dispatch = useDispatch();
 
   const [date, changeDate] = useState(new Date());
@@ -27,6 +33,7 @@ function BookingAdmin() {
   const bookingInfo = groupBy(bookings, ['date', 'Fields.id'], ['hour']);
   const takenHours = bookingInfo[formattedDate]?.[fieldId]?.hour ?? [];
   const detailField = useSelector((state) => state.detail)
+  
 
   const [modal, setModal] = useState(false)
   const [dis, setDis] = useState(true)
@@ -42,14 +49,14 @@ function BookingAdmin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(!localStorage.getItem('plan')){
-    await dispatch(
-      postBooking({
-        date: format(date, 'd/MM/yyyy'),
-        FieldId: fieldId,
-        hour,
-        UserId: cookie.get('id'),
-      }),
-    );
+    // await dispatch(
+    //   postBooking({
+    //     date: format(date, 'd/MM/yyyy'),
+    //     FieldId: fieldId,
+    //     hour,
+    //     UserId: cookie.get('id'),
+    //   }),
+    // );
     await storageHandler()
     changeDate(new Date());
     setHour('');
@@ -69,14 +76,14 @@ function BookingAdmin() {
   }, [hour])
 
   const popUp = async () => {
-    await dispatch(
-      postBooking({
-        date: format(date, 'd/MM/yyyy'),
-        FieldId: fieldId,
-        hour,
-        UserId: cookie.get('id'),
-      }),
-    );
+    // await dispatch(
+    //   postBooking({
+    //     date: format(date, 'd/MM/yyyy'),
+    //     FieldId: fieldId,
+    //     hour,
+    //     UserId: cookie.get('id'),
+    //   }),
+    // );
     await storageHandler()
     changeDate(new Date());
     setHour('');
@@ -160,22 +167,36 @@ function BookingAdmin() {
               disabled={!fieldId}
             >
               <option value="">Seleccione hora</option>
-              {hours.map((hour) => {
+              {hours.map((hour) => {          
+                if(d.getDate() === date.getDate()){
                 return (
                   <option
                     key={hour}
                     className={style.option}
                     value={hour}
-                    disabled={takenHours.includes(hour)}
+                    disabled={takenHours.includes(hour) || hour < actualHour}
                   >
                     {hour}:00
                   </option>
-                );
+                );}
+                else{
+                  return (
+                    <option
+                      key={hour}
+                      className={style.option}
+                      value={hour}
+                      disabled={takenHours.includes(hour)}
+                    >
+                      {hour}:00
+                    </option>
+                  );
+                }
               })}
             </select>
             <button type="submit" className={style.button} disabled={dis}>Reservar</button>
           </div>
-          <img className={style.image} src={image} alt="niñito lindo" />
+          {/* <img className={style.image} src={image} alt="niñito lindo" /> */}
+          <img  className={style.imagecanchita }src="https://res.cloudinary.com/deirkmhyd/image/upload/v1668607914/sintetico/cancha_rffhka.png" alt="niñito lindo" />
         </div>
       </form>
       {modal && <div className={style.modal_main}>

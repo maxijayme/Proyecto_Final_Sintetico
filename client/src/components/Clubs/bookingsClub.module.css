@@ -1,0 +1,54 @@
+.tableBookings {
+  display: grid;
+  justify-items: stretch;
+  width: 80%;
+  margin: 50px auto;
+}
+.tittle {
+  color: white;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+.notfound {
+  margin-top: 80px;
+  color: white;
+}
+
+.tableBookings table {
+  background-color: white;
+  border-collapse: collapse;
+  box-shadow: 0 0 30px #000000;
+}
+
+.tableBookings thead {
+  background-color: #98F576;
+  color: black;
+  border-bottom: 1px solid #404040;
+}
+
+.tableBookings thead th {
+  padding: 10px 0;
+}
+
+.tbody tr {
+  border-bottom: 1px solid #4040401e;
+  /* background-color: #ddd; */
+  color: white;
+}
+
+.tbody th,
+.tbody td {
+  height: 60px;
+  padding: 5px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reservas {
+  color: white;
+  font-size: 30px;
+  margin-bottom: 60px;
+}

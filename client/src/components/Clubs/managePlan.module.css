@@ -1,0 +1,170 @@
+.tablePlan {
+  margin-top: 50px;
+}
+
+.tittle{
+  color: white;
+  font-size: 30px;
+  margin-bottom: 60px;
+
+}
+
+
+
+.tablePlan table {
+  background-color: white;
+  border-collapse: collapse;
+  margin: 0 auto;
+  box-shadow: 0 0 30px #000000;
+}
+
+.tablePlan thead {
+  background-color: #98F576;
+  color: black;
+  border-bottom: 1px solid #404040;
+}
+
+.tablePlan thead th {
+  padding: 10px 0;
+}
+
+.tablePlan tr:nth-child(even) {
+  background-color: #ddd;
+}
+
+.tablePlan td {
+  width: 200px;
+  height: 60px;
+  padding: 5px;
+}
+.precio{
+    font-size: 20px;
+}
+.tablePlan td,
+.tablePlan ul {
+  text-decoration: none;
+  flex-direction: column;
+  justify-content: left;
+  list-style: none;
+}
+.tablePlan .club {
+  font-size: 19px;
+}
+
+.tablePlan .precio {
+  font-size: 19px;
+}
+
+
+.tablePlan .nombre{
+    font-size: 19px;
+}
+.tablePlan .descuento{
+    font-size: 19px;
+}
+
+
+.edit {
+  background-color: skyblue;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 15px
+}
+
+.details {
+  /* background-color: #242529; */
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.details svg{
+  color: rgb(153, 153, 153);
+  transition: color 300ms ease;
+}
+
+.details:hover svg{
+  color: white;
+}
+
+.select{
+    /* width: 140px;
+    height: 30px; */
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #1C1C1C;
+    padding: 5px 10px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: white;
+}
+
+.edit:hover {
+  background-color: rgb(115, 186, 214);
+}
+
+
+
+  .continuar{
+    transition: all 0.3s ease 0s; 
+    cursor: pointer; 
+    outline: none;
+    color: black;
+    padding: 8px 10px;
+    background-color: #98F576;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    font-size: 15px;
+    text-align: center;
+    width: 100px;
+  }
+  .continuar:hover {
+   
+    width: 130px;
+    border-radius: 20px;
+  }
+  
+  .continuar button:active {
+    transform: translateY(-1px);
+  }
+
+.delete {
+  background-color: tomato;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 25px
+}
+
+.cancelar{
+  transition: all 0.3s ease 0s; 
+  cursor: pointer; 
+  outline: none;
+  color: black;
+  padding: 8px 10px;
+  background-color: red;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  text-align: center;
+  width: 80px;
+}
+
+.cancelar:hover {
+  
+  width: 110px;
+  border-radius: 20px;
+}
+
+

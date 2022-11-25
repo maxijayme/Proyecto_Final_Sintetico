@@ -8,7 +8,7 @@ import Cookies from 'universal-cookie';
 import Rentcard from './Rent/rent';
 import MiniFooter from '../MiniFooter/MiniFooter.jsx';
 import axios from 'axios';
-import{URL_APP} from '../../utils/utils.js'
+import { URL_APP } from '../../utils/utils';
 
 function Pagos() {
 
@@ -18,28 +18,42 @@ function Pagos() {
     const [carga, setCarga] = useState(false)
     const cookie = new Cookies()
     const usuario = cookie.get('usuario')
+    const idUser = cookie.get('id')
     const [precio, setPrecio] = useState()
+    const [btn, setBtn] = useState(false) 
 
     const pay = async () => {
-        await axios.post('/payments', {
-            UserId:1,
-            price: precio,
-            itemName: "Renta de cancha(s)",
-            bookings:
-            [
-                {
-                date:"04/11/2022",
-                hour: 9,
-                FieldId: 10
-                }
-            ]
-        })
-        .then(response => response.data)
-        .then(res => {
-            window.location.replace(res)
-        })
-        .catch(error => console.log(error))
-        localStorage.clear()
+        if(rent){
+            await axios.post('/payments', {
+                UserId: idUser,
+                price: precio,
+                itemName: "Reserva",
+                bookings:
+                [
+                    {
+                    date: JSON.parse(rent)[0].date,
+                    hour: JSON.parse(rent)[0].hour,
+                    FieldId: JSON.parse(rent)[0].id
+                    }
+                ]
+            })
+            .then(response => response.data)
+            .then(res => {
+                window.location.replace(res)
+            })
+            .catch(error => console.log(error))
+        } else {
+            await axios.post('/payments', {
+                UserId: idUser,
+                price: precio,
+                itemName: `Plan ${plan}`,
+            })
+            .then(response => response.data)
+            .then(res => {
+                window.location.replace(res)
+            })
+            .catch(error => console.log(error))
+        }
     }
 
     const changeCarga = () => {
@@ -73,6 +87,14 @@ function Pagos() {
     }
 
     useEffect(() => {
+        if(precio === 0){
+            window.location.replace('/')
+            if(rent) localStorage.removeItem('rent')
+            if(plan) localStorage.removeItem('plan')
+        }
+    }, [precio])
+
+    useEffect(() => {
         let totalPrice = 0;
         if(rent){
             JSON.parse(rent).map(r => totalPrice += r.price)
@@ -80,7 +102,6 @@ function Pagos() {
         if (plan) {
             totalPrice += planes[plan].desc ? Number(planes[plan].price) - ((Number(planes[plan].price) / 100) * Number(planes[plan].desc)) : Number(planes[plan].price)
         }
-        console.log('cambio')
         setPrecio(totalPrice)
     },[rent, plan])
 
@@ -107,7 +128,7 @@ function Pagos() {
                         </div>
                       <select defaultValue='default' onChange={(e) => changePlan(e)}>
                         <option value='default' disabled>Cambiar plan</option>
-                        <option value='basic'>Básico</option>
+                        <option value='basico'>Básico</option>
                         <option value='club'>Clubes</option>
                         <option value='premium'>Premium</option>
                       </select>

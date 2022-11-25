@@ -3,11 +3,14 @@ import Navbar from '../NavBar/Navbar';
 import Info from './Info/info';
 import ContactForm from "./ContactForm/ContactForm";
 import { useEffect } from "react";
+import MiniFooter from '../MiniFooter/MiniFooter.jsx';
 
 export default function Landing() {
 
 function scroll () {
-    window.scrollTo(0, 0)
+    if(window.scrollY === 86){
+        window.scrollTo(0, 0)
+    }
 }
 
     useEffect(() => {
@@ -20,6 +23,7 @@ function scroll () {
             <Navbar/>
             <Info/>
             <ContactForm/>
+            <MiniFooter/>
         </div>
     )
 }

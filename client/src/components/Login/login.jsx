@@ -9,9 +9,68 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { useEffect } from 'react'
 import { validate } from './validate'
+import jwt_decode from "jwt-decode";
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
+const clientId = '314902110720-vpf55cs6jct5bj439gs0qa6h1ib35gms.apps.googleusercontent.com'
 
 function Login() {
+   
+    useEffect(() => {
+        const initClient = () => {
+                gapi.client.init({
+                clientId: clientId,
+                scope: ''
+            });
+            };
+            gapi.load('client:auth2', initClient);
+    });
 
+    async function responseGoogle (response){
+        // var userObject = jwt_decode(response.credential);
+        var object = {
+          email: response.profileObj.email,
+          userName: response.profileObj.name,
+          lastName: response.profileObj.familyName,
+          name: response.profileObj.givenName,
+          image: response.profileObj.imageUrl,
+          googleId: response.profileObj.googleId
+  
+      }
+        var {data: {id}} = await axios.post('/users/googleAuth', object);
+        cookie.set('usuario', object.userName)
+        cookie.set('id', id)
+        window.history.back()
+      }
+
+    // const google = window.google;
+    
+    // async function handleCallBackResponse(response){
+    //     var userObject = jwt_decode(response.credential);
+    //     var object = {
+    //         email: userObject.email,
+    //         userName: userObject.name,
+    //         lastName: userObject.family_name,
+    //         name: userObject.given_name,
+    //         image: userObject.picture,
+    //         googleId: userObject.sub
+            
+    //     }
+    //     console.log(object)
+    //     var {data: {id}} = await axios.post('/users/googleAuth', object);
+    //     cookie.set('usuario', object.userName)
+    //     cookie.set('id', id)
+    //     window.history.back()
+    // }
+    // useEffect(()=>{
+    //     google.accounts.id.initialize({
+    //         client_id: '953309372189-7c7r2om3ll3jtpj5qqpmipos5rsddkq2.apps.googleusercontent.com',
+    //         callback: handleCallBackResponse
+    //     });
+    //     google.accounts.id.renderButton(document.getElementById("signInDiv"),
+    //     {theme: "outline", size: "large", });
+    // }, []);
+   
     const [dinamic, setDinamic] = useState('0')
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
@@ -50,9 +109,8 @@ function Login() {
 
     const registerHandler = async (e) => {
         e.preventDefault()
-        await axios.post('/users', register)
+        await axios.post('/users', register, /* {withCredentials: true} */)
         .then(response => {
-            console.log(response)
             setModal(true)
             setRegister({
             name: '',
@@ -76,16 +134,20 @@ function Login() {
         validate(e.target, setError, error, register)
     }
 
-    const login = async (e) => {
+    const login = (e) => {
         e.preventDefault()
-        await axios.post('/users/login', {userName: input.username, password: input.password})
-        .then(response => response.data)
+        axios.post('/users/login',{userName: input.username, password: input.password}/* , {withCredentials: true } */)
+        .then(response => {
+            return response.data;
+        })
         .then(res => {
             cookie.set('usuario', res.userName)
             cookie.set('id', res.id)
             window.history.back()
         })
         .catch(error => {
+            console.log(error);
+
             setInput({
                 username: '',
                 password: ''
@@ -168,8 +230,15 @@ function Login() {
         </div>
         <div className={log.login}>
             <img src={logo} className={log.logo} alt='logo'/>
-            {user.length === 0 ? <div>
-            <h4>Inicia sesión con Google/Facebook</h4>
+            {user.length === 0 ? <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div id="signInDiv"></div> 
+            <GoogleLogin
+                clientId={clientId}
+                buttonText="Inicia sesión con Google"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+            />           
             <p className={log.division}>------------ o con tu usuario -----------</p>
             <form onSubmit={e => login(e)}>
                 <div className={log.user}>

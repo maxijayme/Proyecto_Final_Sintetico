@@ -3,7 +3,7 @@
 .detail {
   /* background-color: #242529; */
   /* background-image: url(https://images.unsplash.com/photo-1473075109809-7a17d327bdf6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80); */
-  background-color: #1C1C1C;
+  background-color: #242529;
   /* background-repeat: none; */
   /* object-fit: cover; */
   color: white;
@@ -11,6 +11,7 @@
   font-size: 16px;
   display: grid;
   justify-items: center;
+  min-height: calc(100vh - 136px);
 }
 
 .detail p {
@@ -41,7 +42,6 @@
   margin-top: 10px;
   justify-content: space-between;
 }
-
 .image {
   display: flex;
 }
@@ -69,6 +69,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.title h3{
+  font-size: 50px;
 }
 
 .button {
@@ -161,11 +165,13 @@
   font-size: 18px;
   text-align: center;
   width: 110px;
+  margin: 0 10px;
 }
 
 .price a:hover {
   /* background-color: #23c483; */
   /* color: #fff; */
+  margin: 0;
   width: 130px;
   border-radius: 20px;
 }
@@ -202,7 +208,7 @@
   /* overflow: scroll; */
   margin-bottom: 30px;
   border-radius: 30px;
-  background-color: rgba(0, 0, 0, 0.575);
+  /* background-color: rgba(0, 0, 0, 0.575); */
 }
 
 .comment {
@@ -212,6 +218,7 @@
   margin: 10px 0;
   display: flex;
   flex-direction: column;
+  background-color: #1C1C1C;
 }
 
 .commentData {
@@ -225,6 +232,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 30px 0 0;
 }
 
 .userData p {
@@ -249,15 +257,22 @@
 .yourComment {
   display: grid;
   justify-items: start;
-  background-color: rgba(0, 0, 0, 0.404);
+  background-color: #404040;
   border-radius: 30px;
   padding: 15px;
 }
 
 .textarea {
-  background-color: rgba(0, 0, 0, 0.575);
+  background-color: #1C1C1C;
   color: white;
-  border-color: rgba(255, 255, 255, 0.753);
+  border: none;
+  outline: none;
+  resize: none;
+  min-width: 80%;
+  min-height: 100px;
+  margin: 10px 0;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .yourComment button{
@@ -269,6 +284,15 @@
   text-decoration: none;
   border-radius: 5px;
   border: none;
+  width: 120px;
+  margin: 0 10px;
+  transition: all 300ms ease;
+}
+
+.yourComment button:hover{
+  width: 140px;
+  margin: 0;
+  border-radius: 30px;
 }
 
 .modal_main{

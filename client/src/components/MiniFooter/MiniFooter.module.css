@@ -2,18 +2,24 @@
     display: flex;
     height: 50px;
     width: 100%;
-    background-color: #242529;
-    justify-content: center;
+    background-color: #1C1C1C;
+    border-top: 3px solid #404040;
+    justify-content:space-around;
     align-items: center;
     position: relative;
+    flex-wrap: wrap;
+}
+
+.logoDer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:0.3rem
 }
 
 .top{
     width: 70px;
-    margin: 0.5rem;
-    position: absolute;
-    bottom: 0;
-    left: 200px;
+    margin-top: -1.5rem;
 }
 
 .socialGroup{
@@ -21,29 +27,36 @@
     font-size: 40px;
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 4rem;
     justify-content: center;
-    cursor: pointer;
-    margin: 0 25rem;
+}
+
+.derechos p{
+    font-size: 15px;
+    color: white;
 }
 
 .socialIcon{
-    margin: 0 3rem;
     width: 25px;
+    gap: 1rem;
+    cursor: pointer;
 }
 
 .icon{
     cursor: pointer;
 }
 
-.derechos{
-    margin: 0rem;
-    padding: 0.7rem;
-    position: absolute;
-    right: 200px;
+.medios p{
+    color: #ffffff;
+    margin-right: 10px;
 }
 
-.derechos p{
-    font-size: 15px;
-    color: white;
+.medios{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mp{
+    height: 30px;
 }

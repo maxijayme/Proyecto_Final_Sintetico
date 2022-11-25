@@ -1,0 +1,43 @@
+.plan {
+    /* display: grid;
+    justify-items: stretch; */
+    /* margin: 10px 70px; */
+    /* min-height: 62vh; */
+    margin: 0 auto;
+  }
+
+  .container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .plan table {
+    /* background-color: white; */
+    border-collapse: collapse;
+    width: 80%;
+  }
+  
+  .plan thead {
+    background-color: #98F576;
+    color: black;
+    border-bottom: 1px solid #404040;
+  }
+  
+  .plan thead th {
+    padding: 10px 0;
+  }
+  
+  .tbody tr{
+    border-bottom: 1px solid #4040401e;
+    /* background-color: #ddd; */
+  }
+
+  .columns{
+    color: white;
+  }
+  
+  .columns th{
+    padding: 5px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+  }

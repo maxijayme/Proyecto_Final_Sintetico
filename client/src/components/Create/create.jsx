@@ -3,8 +3,12 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { postField } from '../../redux/actions/index';
 import { validate } from './validate';
+import Cookies from 'universal-cookie';
 import Navbar from '../NavBar/Navbar';
 import{URL} from '../../utils/utils.js'
+import MiniFooter from '../MiniFooter/MiniFooter.jsx'
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import {
   getCities,
@@ -21,8 +25,14 @@ export default function Create() {
   const sizes = useSelector((s) => s.sizes);
   const surfaces = useSelector((s) => s.surfaces);
   const facilities = useSelector((s) => s.facilities);
+  const [modal, setModal] = useState(false)
+  const [modalIs, setModalIs] = useState('inProcess')
 
   const[previewSource, setPreviewSource] = useState();
+  
+  const cookie = new Cookies()
+  const idUser = cookie.get('id')
+ 
 
   useEffect(() => {
     dispatch(getCities());
@@ -67,9 +77,9 @@ export default function Create() {
     for (let inputToValidate of inputsToValidate) {
       const isValid = validate(
         e.target.elements[inputToValidate],
-        dispatchError,
+        dispatchError, input
       );
-
+        
       if (!isValid) {
         canSubmit = false;
       }
@@ -79,7 +89,15 @@ export default function Create() {
       const cloudinaryImg = await uploadImage(previewSource)
       const obj = input;
       obj.image = cloudinaryImg;
-      dispatch(postField(obj));
+      // dispatch(postField(obj, idUser));
+      try {
+        await axios.post('/fields/' + idUser, obj);
+        setModal(true)
+        setModalIs('complete')
+      } catch (error) {
+        setModal(true)
+        setModalIs('failure')
+      }
     }
   };
 
@@ -111,7 +129,7 @@ export default function Create() {
 
 
     setInput({ ...input, [target.name]: targetValue });
-    validate(target, dispatchError);
+    validate(target, dispatchError, input);
   };
 
   const handlecheck = (e) => {
@@ -141,15 +159,18 @@ export default function Create() {
           <div className={style.sections}>
             <div
               className={classNames(
-                style.group,
+                style.group2,
                 errorState.name && style.error,
               )}
             >
               <div className={style.right}>
                 <Upload previewSource={previewSource} setPreviewSource={setPreviewSource}/>
                 <div className={style.itemsServicios}>
-                  <label className={style.subtittleFa}>Servicios: </label>
+                  <div className={style.servicios_div}>
+                  <label className={style.subtittleFax}>Servicios: </label>
+                  <div className={style.select_servicios}>
                   {facilities.map((f) => (
+                    <div>
                     <label key={f.id} className={style.subtittleFa}>
                       {f.name}
                       <input
@@ -158,7 +179,10 @@ export default function Create() {
                         onChange={handlecheck}
                       />
                     </label>
+                    </div>
                   ))}
+                  </div>
+                  </div>
                   <div className={style.contenedorButton}>
                     <button type="submit" className={style.buttonCrear}>
                       Crear
@@ -182,7 +206,7 @@ export default function Create() {
                   name="name"
                   value={input.name}
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.name && <p>{errorState.name}</p>}
               </div>          
@@ -200,7 +224,7 @@ export default function Create() {
                   name="price"
                   value={input.price}
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.price && <p>{errorState.price}</p>}
               </div>
@@ -215,7 +239,7 @@ export default function Create() {
                   className={style.input}
                   name="city"
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 >
                   <option value="">Seleccione una localidad</option>
 
@@ -240,7 +264,7 @@ export default function Create() {
                   name="address"
                   value={input.address}
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.address && <p>{errorState.address}</p>}
               </div>
@@ -255,7 +279,7 @@ export default function Create() {
                   onChange={handleInputChange}
                   name="size"
                   className={style.input}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 >
                   <option value="">Seleccione un tamaño</option>
                   {sizes.map((size) => (
@@ -263,7 +287,7 @@ export default function Create() {
                       key={size.id}
                       value={size.id}
                       onChange={handleInputChange}
-                      onBlur={(e) => validate(e.target, dispatchError)}
+                      onBlur={(e) => validate(e.target, dispatchError, input)}
                     >
                       Futbol {size.name}
                     </option>
@@ -282,7 +306,7 @@ export default function Create() {
                   className={style.input}
                   name="surface"
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 >
                   <option value="">Seleccione una superficie</option>
                   {surfaces.map((surface) => (
@@ -310,7 +334,7 @@ export default function Create() {
                   name="openHour"
                   step="1800"
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.openHour && <p>{errorState.openHour}</p>}
               </div>
@@ -327,7 +351,7 @@ export default function Create() {
                   name="closeHour"
                   step="1800"
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.closeHour && <p>{errorState.closeHour}</p>}
               </div>
@@ -342,14 +366,36 @@ export default function Create() {
                   name="description"
                   className={style.textarea}
                   onChange={handleInputChange}
-                  onBlur={(e) => validate(e.target, dispatchError)}
+                  onBlur={(e) => validate(e.target, dispatchError, input)}
                 />
                 {errorState.description && <p>{errorState.description}</p>}
               </div>
             </div>
           </div>
+        <Link className={style.link_back} to='/profile'>{'< Volver'}</Link>
         </form>
       </div>
+      <MiniFooter/>
+      {modal && (modalIs === 'complete' ? 
+            <div className={style.modal_main}>
+                <div className={style.modal_box}>
+                    <p>La publicación se ha realizado con éxito.<br/>Espera a que uno de los administradores la apruebe. :)</p>
+                    <div className={style.modal_btns}>
+                        <button onClick={() => (setModal({is: 'inProcess', active: false}), window.location.replace('/'))}>Ir al inicio</button>
+                    </div>
+                </div>
+            </div>
+            :
+            <div className={style.modal_main}>
+                <div className={style.modal_box}>
+                    <p>Lo lamentamos, no se pudo publicar tu cancha :(</p>
+                    <h1>¿Quieres reintentarlo?</h1>
+                    <div className={style.modal_btns}>
+                        <button onClick={() => (setModal(false), setModalIs('inProcess'))}>Reintentar</button>
+                        <button onClick={() => (setModal(false), setModalIs('inProcess'), window.location.replace('/'))}>Ir al inicio</button>
+                    </div>
+                </div>
+            </div>)}
     </div>
   );
 }

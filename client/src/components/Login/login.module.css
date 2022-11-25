@@ -28,7 +28,7 @@
     margin-top: 20px;
 }
 
-.login h4{
+.login button{
     padding: 10px 15px;
     background: whitesmoke;
     width: max-content;
@@ -168,7 +168,7 @@
     border: none;
     font-size: 18px;
     cursor: pointer;
-    width: 150px;
+    width: 160px;
     transition: all 300ms ease;
 }
 
@@ -181,6 +181,11 @@
     background-color: #404040;
     color: white;
     cursor: default;
+}
+
+.btn:disabled:hover{
+    width: 160px;
+    border-radius: 5px;
 }
 
 .btn2{
@@ -321,4 +326,9 @@
 @keyframes err{
     from{transform: translateX(-50px) rotate(-135deg);}
     to{transform: translateX(0px) rotate(0deg);}
+}
+
+.googleForm{
+    padding: 50px;
+    background-color: red;
 }

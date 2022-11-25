@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Field, Facility, Surface, Size, City, Comment, User, Booking } = require("../db");
+const { Field, Facility, Surface, Size, City, Comment, User, Booking, Sequelize } = require("../db");
 const { Op } = require("sequelize");
 
 const queryParams = {
@@ -14,18 +14,18 @@ const queryParams2 = {
 };
 
 const queryParams4 ={
-  attributes: ["id"],
-  through: {
-    attributes: [],
+  include: {
+    model: User,
+    attributes: ["phone", "email", "name", "lastName"]
   },
 }
 
 async function getFields() {
   let fields = await Field.findAll({
     where: {
-      state: {
-        [Op.eq]: "APPROVED",
-      },
+      // state: {
+      //   [Op.eq]: "APPROVED",
+      // },
     },
     include: [
       {
@@ -48,14 +48,36 @@ async function getFields() {
         model: Booking,
         ...queryParams4,
       },
+      {
+        model: User,
+        attributes: ["planType"],
+      },
     ],
   });
-  if (fields.length) return fields;
+  if (fields.length){
+    for (let i = 0; i < fields.length; i++){
+      var field = fields[i];
+      field.score = await getFieldAvg(field.id);
+    }
+    return fields;
+  }
   else throw new Error("there is no data in db");
 }
+async function getFieldAvg(id){
+  const comments = await Comment.findOne({
+    where: {
+      FieldId: id,
+    },
+    attributes: [
+      [Sequelize.fn('AVG', Sequelize.col('score')), 'scr']
+    ],
+    plain: true
+  })
+  return comments.dataValues.scr;
 
+}
 async function getFieldById(id) {
-  const field = await Field.findByPk(id, {
+  var field = await Field.findByPk(id, {
     where: {
       state: {
         [Op.eq]: "APPROVED",
@@ -78,13 +100,20 @@ async function getFieldById(id) {
         model: Facility,
         ...queryParams,
       },
+      {
+        model: User,
+        attributes: ["planType"],
+      },      
     ],
   });
+
+  field.score = await getFieldAvg(id);
   if (field) return field;
   else throw new Error("Field does not exist in db");
 }
 
-async function createField(fieldData) {
+async function createField(fieldData, OwnerId) {
+ 
   const {
     id,
     name,
@@ -110,13 +139,14 @@ async function createField(fieldData) {
     openHour,
     closeHour,
     description,
-    state: "APPROVED",
+    state: "PENDING",
   };
   try {
     const newField = await Field.create(field);
     await newField.setSize(size);
     await newField.setSurface(surface);
     await newField.setCity(city);
+    await newField.setUser(OwnerId)
     if (facilities) {
       await newField.addFacilities(facilities);
     }

@@ -1,0 +1,119 @@
+.editplan {
+  /* width: 100%; */
+  /* display: flex;
+  justify-content: center; */
+  /* margin-bottom: 10%; */
+  color: white;
+  margin: 0 200px;
+}
+
+.card {
+  display: flex;
+  /* grid-template-columns: 40% 60%; */
+  justify-content: center;
+  margin: 20px;
+  align-items: center;
+}
+
+/* .card div{
+  display: grid;
+  align-content: center;
+} */
+
+.plan {
+  /* width: 100%; */
+  /* display: grid;
+  grid-template-columns: 60% 40%; */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.txt{
+  height: 150px;
+  /* background-color: #ffffff6b; */
+  background-color: #98F576;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.plan img {
+  object-fit: cover;
+  height: 150px;
+  width: 250px;
+  border-radius: 20px 0 0 20px;
+}
+
+.edit {
+  /* width: 100%; */
+  border-radius: 0 20px 20px 0;
+  background-color: #404040;
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.edit p{
+  width: 100px;
+  text-align: left;
+}
+
+.edit div {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  /* justify-content: flex-end; */
+  padding-top: 20px;
+}
+
+.text{
+  width: 80px;
+  text-align: center;
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+  color: white;
+  font-size: 16px;
+}
+
+.button{
+  cursor: pointer;
+  width: 100px;
+  border-radius: 5px;
+  border: 0;
+  transition: all 300ms ease;
+  height: 25px;
+  background-color: #98F576;
+  margin: 0 10px;
+}
+
+.button:hover{
+  border-radius: 15px;
+  width: 120px;
+  margin: 0;
+}
+
+/* .button{
+  margin: 1.5rem;
+  width: 50%;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 300ms ease;
+  border-radius: 15px;
+  border: 0;
+}
+
+.button:hover{
+  background-color: #98F576;
+} */

@@ -3,14 +3,11 @@ const { Sequelize, Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-let config;
-
-process.env.NODE_ENV?
+process.env.NODE_ENV === 'development'?
 config = require("./config/config.js")['development']:
 config = require("./config/config.js")['production']
 
 const sequelize = new Sequelize(config.url, config);
-
 
 const basename = path.basename(__filename);
 
@@ -46,6 +43,9 @@ Field.belongsTo(Size);
 Surface.hasMany(Field);
 Field.belongsTo(Surface);
 
+User.hasMany(Field, {foreignKey: "OwnerId"})
+Field.belongsTo(User, {foreignKey: "OwnerId"})
+
 Field.belongsToMany(Booking, { through: 'field_booking' });
 Booking.belongsToMany(Field, { through: 'field_booking' });
 
@@ -71,5 +71,6 @@ Comment.belongsTo(Field);
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
-  Op
+  Op,
+  Sequelize
 };

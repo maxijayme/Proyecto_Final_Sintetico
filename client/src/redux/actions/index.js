@@ -12,10 +12,17 @@ import {
   FILTER_BY_SIZE,
   FILTER_BY_TIME,
   FILTER_BY_SURFACE,
+  FILTER_BY_NAME,
+  FILTER_FIELDS,
   CLEAN_ERRORS,
   GET_COMMENTS,
   GET_FIELD_COMMENTS,
   GET_BOOKINGS,
+  SEND_EMAIL,
+  DELETE_ACCOUNT,
+  GET_USER,
+  PUT_USER,
+  PLAN,
 } from './actionsTypes';
 
 export const prueba = () => {
@@ -24,6 +31,25 @@ export const prueba = () => {
     payload: 'prueba',
   };
 };
+
+export const plan = (editPlan, key) => {
+  return {
+    type: PLAN,
+    payload: { editPlan, key },
+  }
+}
+
+export  function sendInquiryEmail(payload){
+return async (dispatch) => {
+  const response = await axios.post('/inquirys', {mail:payload} )
+  dispatch({
+    type: SEND_EMAIL,
+    payload: response.data
+  })
+}
+  
+    
+}
 
 export const getCities = () => {
   return async (dispatch) => {
@@ -64,29 +90,68 @@ export const getFacilities = () => {
       payload: response.data,
     });
   };
+
 };
 
-export const postField = (payload) => {
-  return async () => {
-    try {
-      await axios.post('/fields', payload);
-      alert('Cancha creada con exito!');
-      window.location.href = '/sintetico';
-    } catch (error) {
-      alert('No se pudo crear una cancha.');
-    }
-  };
-};
+// export const postField = (payload, id) => {
+//   /* console.log(isNaN(id)) //true no es un numero */
+//   return async () => {
+//     try {
+//       await axios.post('/fields/' + id, payload);
+//       alert('Cancha creada con exito!');
+//       window.location.href = '/sintetico';
+//     } catch (error) {
+//       alert('No se pudo crear una cancha.');
+//     }
+//   };
+// };
+
+
 
 export const getFields = () => {
   return async (dispatch) => {
-    const response = await axios.get('/fields');
+    const response = await axios.get('/fields' );
     dispatch({
       type: GET_FIELDS,
       payload: response.data,
     });
   };
 };
+
+export const getUsers = () => {
+  return async (dispatch) => {
+    const users = await axios.get("/users")
+    dispatch({
+      type: GET_USER,
+      payload: users.data,
+    })
+  }
+}
+
+export const putUser = (id) => {
+  return async (dispatch) => {
+    const user = await axios.put("/users/" + id)
+    dispatch({
+      type: PUT_USER,
+      payload: user.data,
+    })
+  }
+}
+
+export function filterField(payload) {
+  return {
+    type: FILTER_FIELDS,
+    payload: payload,
+  };
+}
+
+export function filterFieldByName(payload) {
+  Number(payload);
+  return {
+    type: FILTER_BY_NAME,
+    payload: payload,
+  };
+}
 
 export function filterFieldByCity(payload) {
   Number(payload);
@@ -195,4 +260,14 @@ export function cleanErrors() {
     type: CLEAN_ERRORS,
     payload: null,
   };
+}
+
+export const deleteAccount = (id) => {
+  return async (dispatch) => {
+    const response = await axios.delete('/users/' + id)
+    dispatch({
+      type: DELETE_ACCOUNT,
+      payload: response.data
+    })
+  }
 }
